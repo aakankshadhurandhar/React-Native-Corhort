@@ -15,51 +15,40 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section: React.FC<{
-  title: string;
-}> = ({children, title}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+const CHARACTER_LIMIT = 280;
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-
+  const [Char, setCharRemaining] = React.useState(CHARACTER_LIMIT);
+  const handleChange = (Text: string) => {
+    let charlength = Text.length;
+    setCharRemaining(CHARACTER_LIMIT - charlength);
+  };
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+  const getInputStyles = () => {
+    if (Char < 10 && Char > -1) {
+      return {borderColor: '#eedb0c', backgroundColor: '#f8f4cd'};
+    } else if (Char < 0) {
+      return {borderColor: '#dd1010', backgroundColor: '#f7cccc'};
+    }
+    return {};
+  };
+
+  const getTextStyles = () => {
+    if (Char < 10 && Char > -1) {
+      return {color: '#eedb0c'};
+    } else if (Char < 0) {
+      return {color: '#dd1010'};
+    }
+    return {};
   };
 
   return (
@@ -68,24 +57,18 @@ const App = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> Hello
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover ghhj what to do next:
-          </Section>
-          <LearnMoreLinks />
+          <TextInput
+            style={{...styles.input, ...getInputStyles()}}
+            onChangeText={handleChange}
+            multiline={true}
+          />
+          <Text style={{...styles.charText, ...getTextStyles()}}>
+            {Char} characters remaining
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -93,21 +76,15 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  input: {
+    borderWidth: 1,
+    fontSize: 20,
+
+    margin: 12,
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  charText: {
+    fontSize: 20,
+    marginTop: 10,
   },
 });
 
