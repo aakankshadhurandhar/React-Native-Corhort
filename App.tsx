@@ -76,9 +76,7 @@ const App = () => {
           <Section title="Step One">
             Edit <Text style={styles.highlight}>App.tsx</Text> Hello
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
+          <Section title="See Your Changes"></Section>
           <Section title="Debug">
             <DebugInstructions />
           </Section>
